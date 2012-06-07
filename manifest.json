@@ -1,0 +1,19 @@
+{
+  "name": "kanbanery-pomodoro",
+  "version": "0.1",
+  "description": "Use pomodor inside of kanbanery",
+
+  "content_scripts": [{
+    "matches": [
+      "https://*.kanbanery.com/projects/*/new_board",
+      "http://*.kanbanery.llpdemo.com/projects/*/new_board",
+      "http://*.k.dev/projects/*/new_board"
+    ],
+
+    "js": [
+      "js/app.js"
+    ],
+
+    "css": [ ]
+  }]
+}
