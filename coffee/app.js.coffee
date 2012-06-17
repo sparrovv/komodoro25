@@ -1,21 +1,34 @@
-KP = {}
-
-class KP.app
+class KP.App
   constructor: ->
+    $(document).bind 'tasks-loaded', => @init()
+    @pomodoroLog = new KP.PomodoroLogs()
+    @pomodoroLog.fetch()
+    KP.app = this
 
   init: ->
-    # inject handlers to taskItemView
-    # setupListeners
-    # on pomodorIconClicked, onPomodorIconClicked, this
+    KP.url = $('#komodoro-url').val()
 
-  onPomodorIconClicked: ->
-    # taskModel = e.target.parent.view().model
-    # pt = new KP.PomodoroTimer(taskModel)
-    # pt.render()
-    #
-    #
-class KP.PomodoroTimer extends Backbone.View
+    el = $("<a class='pomodoro'><img src='#{KP.url}/assets/tomato.png' alt='P' style='width: 8px; height: 8px;'/></a>")
+    $('.task-view .task-panel').append(el)
 
-  constructor: (taskItemView) ->
+    thiz = @
+    $('.task-view .pomodoro').click (e) -> 
+      e.preventDefault()
+      thiz.onPomodorIconClicked(this)
+      false
 
-#class KP.PomodoroLog extends
+    @tickSound = new Audio("#{KP.url}/assets/tick.wav")
+    @endSound = new Audio("#{KP.url}/assets/stop.wav")
+    @startSound = new Audio("#{KP.url}/assets/start.wav")
+
+
+  onPomodorIconClicked: (el) ->
+    taskModel = $(el).parents('.task-view').view().model
+
+    pomodoroView = new KP.PomodoroView(model: taskModel)
+    K2.modal.displayView pomodoroView
+
+    false
+
+if window.K2
+  new KP.App()

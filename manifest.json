@@ -1,19 +1,30 @@
 {
   "name": "kanbanery-pomodoro",
   "version": "0.1",
-  "description": "Use pomodor inside of kanbanery",
+  "description": "Use pomodoro inside of kanbanery",
 
   "content_scripts": [{
     "matches": [
-      "https://*.kanbanery.com/projects/*/new_board",
-      "http://*.kanbanery.llpdemo.com/projects/*/new_board",
-      "http://*.k.dev/projects/*/new_board"
+      "https://*.kanbanery.com/projects/*/board",
+      "http://*.kanbanery.llpdemo.com/projects/*/board",
+      "http://*.k.dev/projects/*/board"
     ],
 
     "js": [
-      "js/app.js"
+      "js/proxy.js",
+      "js/init.js",
+      "js/local_storage.js",
+      "js/pomodoro_log.js",
+      "js/pomodoro_log_view.js",
+      "js/templates.js",
+      "js/timer.js",
+      "js/pomodoro_view.js",
+      "js/app.js",
+      "js/content.js"
     ],
 
-    "css": [ ]
+    "css": [
+      "css/style.css"
+    ]
   }]
 }

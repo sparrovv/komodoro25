@@ -1,27 +1,46 @@
-var KP,
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-KP = {};
+KP.App = (function() {
 
-KP.app = (function() {
+  function App() {
+    var _this = this;
+    $(document).bind('tasks-loaded', function() {
+      return _this.init();
+    });
+    this.pomodoroLog = new KP.PomodoroLogs();
+    this.pomodoroLog.fetch();
+    KP.app = this;
+  }
 
-  function app() {}
+  App.prototype.init = function() {
+    var el, thiz;
+    KP.url = $('#komodoro-url').val();
+    el = $("<a class='pomodoro'><img src='" + KP.url + "/assets/tomato.png' alt='P' style='width: 8px; height: 8px;'/></a>");
+    $('.task-view .task-panel').append(el);
+    thiz = this;
+    $('.task-view .pomodoro').click(function(e) {
+      e.preventDefault();
+      thiz.onPomodorIconClicked(this);
+      return false;
+    });
+    this.tickSound = new Audio("" + KP.url + "/assets/tick.wav");
+    this.endSound = new Audio("" + KP.url + "/assets/stop.wav");
+    return this.startSound = new Audio("" + KP.url + "/assets/start.wav");
+  };
 
-  app.prototype.init = function() {};
+  App.prototype.onPomodorIconClicked = function(el) {
+    var pomodoroView, taskModel;
+    taskModel = $(el).parents('.task-view').view().model;
+    pomodoroView = new KP.PomodoroView({
+      model: taskModel
+    });
+    K2.modal.displayView(pomodoroView);
+    return false;
+  };
 
-  app.prototype.onPomodorIconClicked = function() {};
-
-  return app;
+  return App;
 
 })();
 
-KP.PomodoroTimer = (function(_super) {
-
-  __extends(PomodoroTimer, _super);
-
-  function PomodoroTimer(taskItemView) {}
-
-  return PomodoroTimer;
-
-})(Backbone.View);
+if (window.K2) {
+  new KP.App();
+}

@@ -1,0 +1,70 @@
+#countdown {
+  font-size: 90px;
+  text-align: center;
+  text-shadow: 4px 4px 5px lightGrey;
+}
+
+#pomodoro-box {
+  padding: 10px 5px
+}
+
+#pomodoro-box #start-pomodoro{
+  background: #0064CD;
+  color: white;
+  font-weight: normal;
+}
+
+#pomodoro-box #stop-pomodoro{
+  background: #ff5656;
+  color: white;
+  font-weight: normal;
+}
+
+#pomodoro-log {
+  text-align: center;
+}
+
+#pomodoro-log table{
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+  font-size: 12px;
+  width: 600px;
+  text-align: left;
+  border-collapse: collapse;
+  margin: 30px auto;
+}
+
+#pomodoro-log table th{
+  font-weight: normal;
+  font-size: 14px;
+  border-bottom: 2px solid #6678B1;
+  border-right: 30px solid white;
+  border-left: 30px solid white;
+  color: #039;
+  padding: 8px 2px;
+}
+
+#pomodoro-log table td {
+  border-right: 30px solid white;
+  border-left: 30px solid white;
+  color: #669;
+  padding: 12px 2px 0;
+}
+
+#pomodoro-box .commands {
+  margin: 30px 0px;
+
+  text-align: center;
+}
+
+#pomodoro-box input[type='text'] {
+  width: 500px;
+}
+
+#pomodoro-box h2 {
+  margin: 10px 10px 20px;
+  color: #222;
+  border-bottom: 1px solid #CCC;
+  padding-bottom: 5px;
+  -webkit-box-shadow: 0 1px 0 0 white;
+  -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
