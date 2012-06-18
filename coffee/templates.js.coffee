@@ -13,6 +13,7 @@ KP.pomodorTemplate = '
     <button id="start-pomodoro" class="btn primary">Start</button>
     <button id="stop-pomodoro" class="btn success">Abort</button>
   </div>
+  <div class="break-info">TAKE BREAK!!!</div>
 
 
   <div id="pomodoro-log"></div>
@@ -40,4 +41,11 @@ KP.PomodoroLogEntry = '
   <td><%= type %></td>
   <td><%= time %></td>
   <td><%= created_at  %></td>
+'
+
+KP.PomodoroLogsOverview = '
+  <h2>Pomodoro Log Overview</h2>
+
+  Number of Pomodors Today - 
+  Number of Pomodors This Week:
 '

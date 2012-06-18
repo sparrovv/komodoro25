@@ -3,31 +3,32 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 if (window.K2) {
   K2.Timer = (function() {
 
-    function Timer() {
+    function Timer(timer) {
+      if (timer == null) {
+        timer = 1500000;
+      }
       this.tick = __bind(this.tick, this);
+
       _.extend(this, Backbone.Events);
       this.intervalId = void 0;
-      this.pomodoroLength = 1500000;
-      this.breakLength = 500000;
+      this.timerLength = timer;
     }
 
-    Timer.prototype.numberOfSeconds = function() {
-      return new Date(this.pomodoroLength).getSeconds();
-    };
-
-    Timer.prototype.numberOfMinutes = function() {
-      return new Date(this.pomodoroLength).getMinutes();
+    Timer.prototype.initialTime = function() {
+      var dateDiff;
+      dateDiff = moment(new Date(this.timerLength));
+      return [dateDiff.format('mm'), dateDiff.format('ss')];
     };
 
     Timer.prototype.currentTime = function() {
       var dateDiff, diff;
-      diff = this.pomodoroLength - this.timeDiff();
+      diff = this.timerLength - this.timeDiff();
       if (diff >= 0) {
-        dateDiff = new Date(diff);
-        return [dateDiff.getMinutes(), dateDiff.getSeconds()];
+        dateDiff = moment(new Date(diff));
+        return [dateDiff.format('mm'), dateDiff.format('ss')];
       } else {
         this.trigger('end');
-        return [0, 0];
+        return ['00', '00'];
       }
     };
 

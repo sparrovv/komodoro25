@@ -1,27 +1,24 @@
 if window.K2
   class K2.Timer
-    constructor: ->
+    constructor: (timer=1500000)->
       _.extend this, Backbone.Events
 
       @intervalId = undefined
-      @pomodoroLength = 1500000 #25minutes
-      @breakLength = 500000 #5minutes
+      @timerLength = timer
 
-    numberOfSeconds: ->
-      new Date(@pomodoroLength).getSeconds()
-
-    numberOfMinutes: ->
-      new Date(@pomodoroLength).getMinutes()
+    initialTime: ->
+      dateDiff = moment(new Date(@timerLength))
+      [dateDiff.format('mm'), dateDiff.format('ss')]
 
     currentTime: ->
-      diff =  @pomodoroLength - @timeDiff() 
+      diff =  @timerLength - @timeDiff() 
 
       if diff >= 0
-        dateDiff = new Date(diff)
-        [dateDiff.getMinutes(), dateDiff.getSeconds()]
+        dateDiff = moment(new Date(diff))
+        [dateDiff.format('mm'), dateDiff.format('ss')]
       else
         @trigger 'end'
-        [0, 0]
+        ['00', '00']
 
     tick: =>
       @trigger 'tick'

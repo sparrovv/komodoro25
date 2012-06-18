@@ -63,7 +63,7 @@ if (window.K2) {
 
     PomodoroLogs.prototype.finished = function(task_id) {
       return _(this.all_for_task_id(task_id)).filter(function(l) {
-        return l.type === 'finished';
+        return l.get('type') === 'finished';
       });
     };
 

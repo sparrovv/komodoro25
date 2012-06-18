@@ -1,30 +1,29 @@
 if window.K2
   class KP.PomodoroView extends window.Backbone.View
-    context: ->
-      name: @model.get('title')
-      minutes: @timer.numberOfMinutes()
-      seconds: @timer.numberOfSeconds()
-
     events:
-      'click #start-pomodoro': 'onPomodoroStart'
-      'click #stop-pomodoro': 'onPomodoroStop'
+      'click #start-pomodoro:not(.disabled)': 'onPomodoroStart'
+      'click #stop-pomodoro:not(.disabled)': 'onPomodoroStop'
       'keydown input': 'onKeyDown'
-
-    onKeyDown: (e) ->
-      if e.keyCode == 13
-        @onPomodoroStart()
-        false
-      else
-        true
 
     initialize: ->
       super arguments
 
-      @timer = new K2.Timer()
+      @breakTimer = new K2.Timer(KP.settings.breakTime)
+      @breakTimer.on 'end', @onBreakTimerEnd, this
+      @breakTimer.on 'tick', @onBreakTimerTick, this
 
-      @timer.on 'end', @onTimerEnd, this
-      @timer.on 'tick', @onTimerTick, this
+      @pomodoroTimer = new K2.Timer(KP.settings.breakTime)
+      @pomodoroTimer.on 'end', @onPomodoroTimerEnd, this
+      @pomodoroTimer.on 'tick', @onPomodoroTimerTick, this
+
       @documentTitle = $(document).attr('title')
+
+    context: ->
+      time = @pomodoroTimer.initialTime()
+
+      name: @model.get('title')
+      minutes: time[0]
+      seconds: time[1]
 
     render: ->
       @$el.html _.template(KP.pomodorTemplate, @context())
@@ -33,60 +32,94 @@ if window.K2
         collection: KP.app.pomodoroLog, task: @model
 
       @$el.find('#pomodoro-log').html log.render().el
-      
+
       this
 
     focus: ->
       @$('input').focus()
 
-    onTimerTick: ->
-      KP.app.tickSound.play()
-      time = @timer.currentTime()
-      minutes = time[0]
-      seconds = time[1]
-
-      @$('.seconds').text(seconds)
+    renderTimer: (minutes, seconds) ->
       @$('.minutes').text(minutes)
+      @$('.seconds').text(seconds)
 
       $(document).attr('title', "#{minutes}:#{seconds}")
 
-    onTimerEnd: ->
+    onBreakTimerTick: ->
+      time = @breakTimer.currentTime()
+      @renderTimer(time[0], time[1])
+
+    onBreakTimerEnd: ->
+      KP.app.endSound.play()
+
+      @breakTimer.stop()
+      $(document).attr('title', @documentTitle)
+
+      @$('.break-info').hide()
+      @$('.commands').show()
+
+    onPomodoroTimerTick: ->
+      KP.app.tickSound.play()
+      time = @pomodoroTimer.currentTime()
+      @renderTimer(time[0], time[1])
+
+    onPomodoroTimerEnd: ->
       log = new KP.PomodoroLog
         name: @model.get('title')
         task_id: @model.id 
         type: 'finished'
-        time: @timer.timeDiff()
+        time: @pomodoroTimer.timeDiff()
+
       KP.app.pomodoroLog.add(log)
       log.save()
 
-      @timer.stop()
+      @pomodoroTimer.stop()
       KP.app.endSound.play()
       $(document).attr('title', @documentTitle)
+      @startBreakTimer()
 
-    onPomodoroStart: ->
+    startBreakTimer: ->
+      @breakTimer.start()
+      @$('.commands').hide()
+      @$('.break-info').show()
+
+    onPomodoroStart: (e) ->
       KP.app.startSound.play()
-      @timer.start()
+      @pomodoroTimer.start()
 
       false
 
-    onPomodoroStop: ->
+    onPomodoroStop: (e) ->
       log = new KP.PomodoroLog
         name: @model.get('title')
         task_id: @model.id 
         type: 'finished'
-        time: @timer.timeDiff()
+        time: @pomodoroTimer.timeDiff()
+
       KP.app.pomodoroLog.add log
       log.save()
 
       $(document).attr('title', @documentTitle)
-      @timer.stop()
+      @pomodoroTimer.stop()
 
       false
 
+    onKeyDown: (e) ->
+      if e.keyCode == 13
+        @onPomodoroStart()
+        false
+      else
+        true
+
     destroy: ->
-      @timer.stop()
-      @timer.destroy()
-      delete @timer
+      @pomodoroTimer.stop()
+      @pomodoroTimer.destroy()
+      delete @pomodoroTimer
+
+      @breakTimer.stop()
+      @breakTimer.destroy()
+      delete @breakTimer
+
+      $(document).attr('title', @documentTitle)
 
       @off()
       @remove()

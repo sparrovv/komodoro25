@@ -10,35 +10,31 @@ if (window.K2) {
       return PomodoroView.__super__.constructor.apply(this, arguments);
     }
 
-    PomodoroView.prototype.context = function() {
-      return {
-        name: this.model.get('title'),
-        minutes: this.timer.numberOfMinutes(),
-        seconds: this.timer.numberOfSeconds()
-      };
-    };
-
     PomodoroView.prototype.events = {
-      'click #start-pomodoro': 'onPomodoroStart',
-      'click #stop-pomodoro': 'onPomodoroStop',
+      'click #start-pomodoro:not(.disabled)': 'onPomodoroStart',
+      'click #stop-pomodoro:not(.disabled)': 'onPomodoroStop',
       'keydown input': 'onKeyDown'
-    };
-
-    PomodoroView.prototype.onKeyDown = function(e) {
-      if (e.keyCode === 13) {
-        this.onPomodoroStart();
-        return false;
-      } else {
-        return true;
-      }
     };
 
     PomodoroView.prototype.initialize = function() {
       PomodoroView.__super__.initialize.call(this, arguments);
-      this.timer = new K2.Timer();
-      this.timer.on('end', this.onTimerEnd, this);
-      this.timer.on('tick', this.onTimerTick, this);
+      this.breakTimer = new K2.Timer(KP.settings.breakTime);
+      this.breakTimer.on('end', this.onBreakTimerEnd, this);
+      this.breakTimer.on('tick', this.onBreakTimerTick, this);
+      this.pomodoroTimer = new K2.Timer(KP.settings.breakTime);
+      this.pomodoroTimer.on('end', this.onPomodoroTimerEnd, this);
+      this.pomodoroTimer.on('tick', this.onPomodoroTimerTick, this);
       return this.documentTitle = $(document).attr('title');
+    };
+
+    PomodoroView.prototype.context = function() {
+      var time;
+      time = this.pomodoroTimer.initialTime();
+      return {
+        name: this.model.get('title'),
+        minutes: time[0],
+        seconds: time[1]
+      };
     };
 
     PomodoroView.prototype.render = function() {
@@ -56,57 +52,93 @@ if (window.K2) {
       return this.$('input').focus();
     };
 
-    PomodoroView.prototype.onTimerTick = function() {
-      var minutes, seconds, time;
-      KP.app.tickSound.play();
-      time = this.timer.currentTime();
-      minutes = time[0];
-      seconds = time[1];
-      this.$('.seconds').text(seconds);
+    PomodoroView.prototype.renderTimer = function(minutes, seconds) {
       this.$('.minutes').text(minutes);
+      this.$('.seconds').text(seconds);
       return $(document).attr('title', "" + minutes + ":" + seconds);
     };
 
-    PomodoroView.prototype.onTimerEnd = function() {
+    PomodoroView.prototype.onBreakTimerTick = function() {
+      var time;
+      time = this.breakTimer.currentTime();
+      return this.renderTimer(time[0], time[1]);
+    };
+
+    PomodoroView.prototype.onBreakTimerEnd = function() {
+      KP.app.endSound.play();
+      this.breakTimer.stop();
+      $(document).attr('title', this.documentTitle);
+      this.$('.break-info').hide();
+      return this.$('.commands').show();
+    };
+
+    PomodoroView.prototype.onPomodoroTimerTick = function() {
+      var time;
+      KP.app.tickSound.play();
+      time = this.pomodoroTimer.currentTime();
+      return this.renderTimer(time[0], time[1]);
+    };
+
+    PomodoroView.prototype.onPomodoroTimerEnd = function() {
       var log;
       log = new KP.PomodoroLog({
         name: this.model.get('title'),
         task_id: this.model.id,
         type: 'finished',
-        time: this.timer.timeDiff()
+        time: this.pomodoroTimer.timeDiff()
       });
       KP.app.pomodoroLog.add(log);
       log.save();
-      this.timer.stop();
+      this.pomodoroTimer.stop();
       KP.app.endSound.play();
-      return $(document).attr('title', this.documentTitle);
+      $(document).attr('title', this.documentTitle);
+      return this.startBreakTimer();
     };
 
-    PomodoroView.prototype.onPomodoroStart = function() {
+    PomodoroView.prototype.startBreakTimer = function() {
+      this.breakTimer.start();
+      this.$('.commands').hide();
+      return this.$('.break-info').show();
+    };
+
+    PomodoroView.prototype.onPomodoroStart = function(e) {
       KP.app.startSound.play();
-      this.timer.start();
+      this.pomodoroTimer.start();
       return false;
     };
 
-    PomodoroView.prototype.onPomodoroStop = function() {
+    PomodoroView.prototype.onPomodoroStop = function(e) {
       var log;
       log = new KP.PomodoroLog({
         name: this.model.get('title'),
         task_id: this.model.id,
         type: 'finished',
-        time: this.timer.timeDiff()
+        time: this.pomodoroTimer.timeDiff()
       });
       KP.app.pomodoroLog.add(log);
       log.save();
       $(document).attr('title', this.documentTitle);
-      this.timer.stop();
+      this.pomodoroTimer.stop();
       return false;
     };
 
+    PomodoroView.prototype.onKeyDown = function(e) {
+      if (e.keyCode === 13) {
+        this.onPomodoroStart();
+        return false;
+      } else {
+        return true;
+      }
+    };
+
     PomodoroView.prototype.destroy = function() {
-      this.timer.stop();
-      this.timer.destroy();
-      delete this.timer;
+      this.pomodoroTimer.stop();
+      this.pomodoroTimer.destroy();
+      delete this.pomodoroTimer;
+      this.breakTimer.stop();
+      this.breakTimer.destroy();
+      delete this.breakTimer;
+      $(document).attr('title', this.documentTitle);
       this.off();
       return this.remove();
     };

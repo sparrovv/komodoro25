@@ -68,3 +68,9 @@
   -webkit-box-shadow: 0 1px 0 0 white;
   -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
+
+#pomodoro-box .break-info {
+  display:none;
+  font-size:40px;
+  text-align: center;
+}

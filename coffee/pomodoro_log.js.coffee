@@ -30,7 +30,7 @@ if window.K2
       @filter (l) -> l.get('task_id') == task_id 
 
     finished: (task_id) ->
-      _(@all_for_task_id(task_id)).filter (l) -> l.type == 'finished'
+      _(@all_for_task_id(task_id)).filter (l) -> l.get('type') == 'finished'
 
     sync: (method, model, options) ->
       resp = undefined
@@ -48,4 +48,3 @@ if window.K2
         options.success resp
       else
         options.error "Record not found"
-

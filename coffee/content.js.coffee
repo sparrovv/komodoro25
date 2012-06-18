@@ -1,5 +1,9 @@
 p = new Proxy(document)
 
+chrome.extension.sendRequest { method: "getSettings" }, (response) ->
+  console.log(response.settings)
+  localStorage['komodoro_settings'] = response.settings
+
 inject = (path) ->
   p.injectScript('', null, chrome.extension.getURL(path) + "?#{new Date().getTime()}")
 

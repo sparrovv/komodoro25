@@ -3,6 +3,9 @@
   "version": "0.1",
   "description": "Use pomodoro inside of kanbanery",
 
+  "options_page": "options.html",
+  "background_page": "background.html",
+
   "content_scripts": [{
     "matches": [
       "https://*.kanbanery.com/projects/*/board",

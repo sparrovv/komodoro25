@@ -1,0 +1,14 @@
+<html>
+  <head>
+<script type="text/javascript">
+  chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+      if (request.method == "getSettings")
+        sendResponse({settings: localStorage['settings']});
+      else
+        sendResponse({}); // snub them.
+  });
+</script>
+</head>
+<body>
+</body>
+</html>

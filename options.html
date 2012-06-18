@@ -1,0 +1,21 @@
+<html>
+<head>
+	<title>Options for komodoro</title>
+	<script type="text/javascript" src="options.js"></script>
+</head>
+<body onload="loadOptions()">
+  <label>Pomodoro Time in ms</label>
+  <input id="pomodoro-time" type="text" value="1500000"><br/>
+
+  <label>Pomodoro Break in ms</label>
+  <input id="break-time" type="text" value="15000"><br/>
+
+  Sounds: <input type="checkbox" id="sounds" /><br />
+
+  <br />
+
+	<button onclick="saveOptions()">Save</button> <br />
+
+	<button onclick="eraseOptions()">Restore default</button>
+</body>
+</html>
