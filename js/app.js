@@ -1,3 +1,4 @@
+var _class;
 
 KP.App = (function() {
 
@@ -40,7 +41,7 @@ KP.App = (function() {
     this.startSound = new KP.KAudio("" + KP.url + "/assets/start.wav");
     this.endBreakSound = new KP.KAudio("" + KP.url + "/assets/end_of_break.wav");
     this.tickSound = new KP.KAudio("" + KP.url + "/assets/tick.wav");
-    return this.addTopnavEl();
+    return this.createLogOverviewListener();
   };
 
   App.prototype.onPomodorIconClicked = function(el) {
@@ -62,12 +63,12 @@ KP.App = (function() {
     return false;
   };
 
-  App.prototype.addTopnavEl = function() {
+  App.prototype.createLogOverviewListener = function() {
     var el,
       _this = this;
-    el = '<li><a id="plog">Plogs</a></li>';
+    el = '<li><a id="komodoro-logs-overview">komodoro</a></li>';
     $('#topnav').append(el);
-    return $('#plog').click(function(e) {
+    return $('#komodoro-logs-overview').click(function(e) {
       e.preventDefault();
       _this.onPomodorLogsOverviewClicked();
       return false;
@@ -85,16 +86,28 @@ KP.KAudio = (function() {
   }
 
   KAudio.prototype.play = function() {
-    if (KP.settings.sounds) {
+    if (this._canPlay()) {
       return this.sound.play();
     }
   };
 
-  KAudio.prototype.stop = function() {
-    return this.sound.stop();
+  KAudio.prototype._canPlay = function() {
+    return KP.settings.sounds;
   };
 
   return KAudio;
+
+})();
+
+KP.VisualNotification = (function() {
+
+  function VisualNotification() {
+    return _class.apply(this, arguments);
+  }
+
+  _class = msg;
+
+  return VisualNotification;
 
 })();
 

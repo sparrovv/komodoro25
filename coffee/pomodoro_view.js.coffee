@@ -58,11 +58,14 @@ if window.K2
       @$('.commands').show()
 
     onPomodoroTimerTick: ->
-      KP.app.tickSound.play()
+      #KP.app.tickSound.play()
+
       time = @pomodoroTimer.currentTime()
       @renderTimer(time[0], time[1])
 
     onPomodoroTimerEnd: ->
+      KP.app.endSound.play()
+
       log = new KP.PomodoroLog
         name: @model.get('title')
         task_id: @model.id 
@@ -73,7 +76,6 @@ if window.K2
       log.save()
 
       @pomodoroTimer.stop()
-      KP.app.endSound.play()
       $(document).attr('title', @documentTitle)
       @startBreakTimer()
 
@@ -83,7 +85,6 @@ if window.K2
       @$('.break-info').show()
 
     onPomodoroStart: (e) ->
-      KP.app.startSound.play()
       @pomodoroTimer.start()
 
       false

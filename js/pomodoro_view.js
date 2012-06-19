@@ -74,13 +74,13 @@ if (window.K2) {
 
     PomodoroView.prototype.onPomodoroTimerTick = function() {
       var time;
-      KP.app.tickSound.play();
       time = this.pomodoroTimer.currentTime();
       return this.renderTimer(time[0], time[1]);
     };
 
     PomodoroView.prototype.onPomodoroTimerEnd = function() {
       var log;
+      KP.app.endSound.play();
       log = new KP.PomodoroLog({
         name: this.model.get('title'),
         task_id: this.model.id,
@@ -90,7 +90,6 @@ if (window.K2) {
       KP.app.pomodoroLog.add(log);
       log.save();
       this.pomodoroTimer.stop();
-      KP.app.endSound.play();
       $(document).attr('title', this.documentTitle);
       return this.startBreakTimer();
     };
@@ -102,7 +101,6 @@ if (window.K2) {
     };
 
     PomodoroView.prototype.onPomodoroStart = function(e) {
-      KP.app.startSound.play();
       this.pomodoroTimer.start();
       return false;
     };

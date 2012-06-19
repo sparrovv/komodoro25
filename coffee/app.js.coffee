@@ -36,7 +36,7 @@ class KP.App
     @endBreakSound = new KP.KAudio("#{KP.url}/assets/end_of_break.wav")
     @tickSound = new KP.KAudio("#{KP.url}/assets/tick.wav")
 
-    @addTopnavEl()
+    @createLogOverviewListener()
 
   onPomodorIconClicked: (el) ->
     taskModel = $(el).parents('.task-view').view().model
@@ -52,26 +52,28 @@ class KP.App
 
     false
 
-  addTopnavEl: ->
-    el = '<li><a id="plog">Plogs</a></li>'
+  createLogOverviewListener: ->
+    el = '<li><a id="komodoro-logs-overview">komodoro</a></li>'
     $('#topnav').append el
 
-    $('#plog').click (e) => 
+    $('#komodoro-logs-overview').click (e) =>
       e.preventDefault()
       @onPomodorLogsOverviewClicked()
       false
-
 
 class KP.KAudio
   constructor: (src) ->
     @sound = new window.Audio(src)
 
   play: () ->
-    if KP.settings.sounds
+    if @_canPlay() 
       @sound.play()
 
-  stop: () ->
-    @sound.stop()
+  _canPlay: ->
+    KP.settings.sounds
+
+class KP.VisualNotification
+  constructor: (msg)
 
 if window.K2
   new KP.App()
