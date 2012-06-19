@@ -19,6 +19,7 @@
       "js/local_storage.js",
       "js/pomodoro_log.js",
       "js/pomodoro_log_view.js",
+      "js/pomodoro_logs_overview_view.js",
       "js/templates.js",
       "js/timer.js",
       "js/pomodoro_view.js",

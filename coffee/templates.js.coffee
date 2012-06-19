@@ -43,9 +43,13 @@ KP.PomodoroLogEntry = '
   <td><%= created_at  %></td>
 '
 
-KP.PomodoroLogsOverview = '
+KP.PomodoroLogsOverviewTemplate = '
   <h2>Pomodoro Log Overview</h2>
 
-  Number of Pomodors Today - 
-  Number of Pomodors This Week:
+  <dl>
+  <dt>Number of pomodors today</dt><dd><%= allToday %></dd>
+
+  <dt>Finished</dt><dd><%= finishedToday %></dd>
+  <dt>Interrupted </dt><dd><%= interruptedToday %></dd>
+  </dl>
 '

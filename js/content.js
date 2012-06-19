@@ -25,6 +25,8 @@ inject('js/pomodoro_log.js');
 
 inject('js/pomodoro_log_view.js');
 
+inject('js/pomodoro_logs_overview_view.js');
+
 inject('js/pomodoro_view.js');
 
 inject('js/app.js');

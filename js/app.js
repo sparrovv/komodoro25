@@ -39,7 +39,8 @@ KP.App = (function() {
     this.endSound = new KP.KAudio("" + KP.url + "/assets/stop.wav");
     this.startSound = new KP.KAudio("" + KP.url + "/assets/start.wav");
     this.endBreakSound = new KP.KAudio("" + KP.url + "/assets/end_of_break.wav");
-    return this.tickSound = new KP.KAudio("" + KP.url + "/assets/tick.wav");
+    this.tickSound = new KP.KAudio("" + KP.url + "/assets/tick.wav");
+    return this.addTopnavEl();
   };
 
   App.prototype.onPomodorIconClicked = function(el) {
@@ -50,6 +51,27 @@ KP.App = (function() {
     });
     K2.modal.displayView(pomodoroView);
     return false;
+  };
+
+  App.prototype.onPomodorLogsOverviewClicked = function() {
+    var pomodoroView;
+    pomodoroView = new KP.PomodoroLogsOverviewView({
+      collection: this.pomodoroLog
+    });
+    K2.modal.displayView(pomodoroView);
+    return false;
+  };
+
+  App.prototype.addTopnavEl = function() {
+    var el,
+      _this = this;
+    el = '<li><a id="plog">Plogs</a></li>';
+    $('#topnav').append(el);
+    return $('#plog').click(function(e) {
+      e.preventDefault();
+      _this.onPomodorLogsOverviewClicked();
+      return false;
+    });
   };
 
   return App;

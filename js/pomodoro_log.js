@@ -16,6 +16,10 @@ if (window.K2) {
       };
     };
 
+    PomodoroLog.prototype.createdAtDateString = function() {
+      return new Date(this.get('created_at')).toDateString();
+    };
+
     PomodoroLog.prototype.sync = function(method, model, options) {
       var resp, store;
       resp = void 0;
@@ -53,7 +57,7 @@ if (window.K2) {
 
     PomodoroLogs.prototype.model = KP.PomodoroLog;
 
-    PomodoroLogs.prototype.localStorage = new Store('komodoro_logs');
+    PomodoroLogs.prototype.localStorage = new Store("komodoro_logs_" + K2.project.id);
 
     PomodoroLogs.prototype.all_for_task_id = function(task_id) {
       return this.filter(function(l) {
@@ -65,6 +69,24 @@ if (window.K2) {
       return _(this.all_for_task_id(task_id)).filter(function(l) {
         return l.get('type') === 'finished';
       });
+    };
+
+    PomodoroLogs.prototype.allToday = function() {
+      var todayString;
+      todayString = (new Date()).toDateString();
+      return this.filter(function(l) {
+        return l.createdAtDateString() === todayString;
+      });
+    };
+
+    PomodoroLogs.prototype.finishedToday = function() {
+      return this.allToday().filter(function(l) {
+        return l.get('type') === 'finished';
+      });
+    };
+
+    PomodoroLogs.prototype.comperator = function() {
+      return this.get('created_at');
     };
 
     PomodoroLogs.prototype.sync = function(method, model, options) {

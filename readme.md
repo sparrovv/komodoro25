@@ -6,3 +6,4 @@
 * listen for new tasks and attach pomidor
 * refactor ?
 * Overview log page
+* localStorage keep all in one or by project.id ?
