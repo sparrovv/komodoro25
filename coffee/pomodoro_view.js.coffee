@@ -1,18 +1,18 @@
 if window.K2
   class KP.PomodoroView extends window.Backbone.View
     events:
-      'click #start-pomodoro:not(.disabled)': 'onPomodoroStart'
-      'click #stop-pomodoro:not(.disabled)': 'onPomodoroStop'
+      'click #start-pomodoro': 'onPomodoroStart'
+      'click #stop-pomodoro': 'onPomodoroStop'
       'keydown input': 'onKeyDown'
 
     initialize: ->
       super arguments
 
-      @breakTimer = new K2.Timer(KP.settings.breakTime)
+      @breakTimer = new K2.Timer(parseInt(KP.settings.breakTime, 10))
       @breakTimer.on 'end', @onBreakTimerEnd, this
       @breakTimer.on 'tick', @onBreakTimerTick, this
 
-      @pomodoroTimer = new K2.Timer(KP.settings.pomodoroTime)
+      @pomodoroTimer = new K2.Timer(parseInt(KP.settings.pomodoroTime, 10))
       @pomodoroTimer.on 'end', @onPomodoroTimerEnd, this
       @pomodoroTimer.on 'tick', @onPomodoroTimerTick, this
 
@@ -92,7 +92,7 @@ if window.K2
       log = new KP.PomodoroLog
         name: @model.get('title')
         task_id: @model.id 
-        type: 'finished'
+        type: 'interrupted'
         time: @pomodoroTimer.timeDiff()
 
       KP.app.pomodoroLog.add log

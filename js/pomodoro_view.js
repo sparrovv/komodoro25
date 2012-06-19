@@ -11,17 +11,17 @@ if (window.K2) {
     }
 
     PomodoroView.prototype.events = {
-      'click #start-pomodoro:not(.disabled)': 'onPomodoroStart',
-      'click #stop-pomodoro:not(.disabled)': 'onPomodoroStop',
+      'click #start-pomodoro': 'onPomodoroStart',
+      'click #stop-pomodoro': 'onPomodoroStop',
       'keydown input': 'onKeyDown'
     };
 
     PomodoroView.prototype.initialize = function() {
       PomodoroView.__super__.initialize.call(this, arguments);
-      this.breakTimer = new K2.Timer(KP.settings.breakTime);
+      this.breakTimer = new K2.Timer(parseInt(KP.settings.breakTime, 10));
       this.breakTimer.on('end', this.onBreakTimerEnd, this);
       this.breakTimer.on('tick', this.onBreakTimerTick, this);
-      this.pomodoroTimer = new K2.Timer(KP.settings.pomodoroTime);
+      this.pomodoroTimer = new K2.Timer(parseInt(KP.settings.pomodoroTime, 10));
       this.pomodoroTimer.on('end', this.onPomodoroTimerEnd, this);
       this.pomodoroTimer.on('tick', this.onPomodoroTimerTick, this);
       return this.documentTitle = $(document).attr('title');
@@ -112,7 +112,7 @@ if (window.K2) {
       log = new KP.PomodoroLog({
         name: this.model.get('title'),
         task_id: this.model.id,
-        type: 'finished',
+        type: 'interrupted',
         time: this.pomodoroTimer.timeDiff()
       });
       KP.app.pomodoroLog.add(log);
