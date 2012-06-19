@@ -72,8 +72,5 @@ class KP.KAudio
   _canPlay: ->
     KP.settings.sounds
 
-class KP.VisualNotification
-  constructor: (msg)
-
 if window.K2
   new KP.App()

@@ -1,4 +1,3 @@
-var _class;
 
 KP.App = (function() {
 
@@ -96,18 +95,6 @@ KP.KAudio = (function() {
   };
 
   return KAudio;
-
-})();
-
-KP.VisualNotification = (function() {
-
-  function VisualNotification() {
-    return _class.apply(this, arguments);
-  }
-
-  _class = msg;
-
-  return VisualNotification;
 
 })();
 
