@@ -26,7 +26,7 @@ if window.K2
       seconds: time[1]
 
     render: ->
-      @$el.html _.template(KP.pomodorTemplate, @context())
+      @$el.html _.template(KP.Templates.pomodoroView, @context())
 
       log = new KP.PomodoroLogsView
         collection: KP.app.pomodoroLog, task: @model

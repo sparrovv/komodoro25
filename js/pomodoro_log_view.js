@@ -26,7 +26,7 @@ if (window.K2) {
     PomodoroLogsView.prototype.render = function() {
       var c,
         _this = this;
-      this.$el.html(_.template(KP.pomodoroLogTemplate, this.context()));
+      this.$el.html(_.template(KP.Templates.pomodoroLogs, this.context()));
       c = this.collection.all_for_task_id(this.task.id);
       _(c).each(function(model) {
         return _this.addLogEntry(model);
@@ -66,7 +66,7 @@ if (window.K2) {
     };
 
     PomodoroLogView.prototype.render = function() {
-      this.$el.html(_.template(KP.PomodoroLogEntry, this.context()));
+      this.$el.html(_.template(KP.Templates.pomodoroLog, this.context()));
       return this;
     };
 

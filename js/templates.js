@@ -1,5 +1,7 @@
 
-KP.pomodorTemplate = '\
+KP.Templates = {};
+
+KP.Templates.pomodoroView = '\
 <div id="pomodoro-box" class="pomodoro-box">\
   <h2>Pomodoro for "<%= name %>"</h2>\
 \
@@ -21,7 +23,7 @@ KP.pomodorTemplate = '\
 </div>\
 ';
 
-KP.pomodoroLogTemplate = '\
+KP.Templates.pomodoroLogs = '\
   <h2>Pomodoro Log (<%= finished %> / <%= all %>)</h2>\
   <table>\
     <thead>\
@@ -37,14 +39,14 @@ KP.pomodoroLogTemplate = '\
   </table>\
 ';
 
-KP.PomodoroLogEntry = '\
+KP.Templates.pomodoroLog = '\
   <td><%= name %></td>\
   <td><%= type %></td>\
   <td><%= time %></td>\
   <td><%= created_at  %></td>\
 ';
 
-KP.PomodoroLogsOverviewTemplate = '\
+KP.Templates.pomodoroLogsOverview = '\
   <div id="pomodoro-logs-overview" class="pomodoro-box">\
     <h2>Pomodoro Log Overview</h2>\
 \

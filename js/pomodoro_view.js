@@ -39,7 +39,7 @@ if (window.K2) {
 
     PomodoroView.prototype.render = function() {
       var log;
-      this.$el.html(_.template(KP.pomodorTemplate, this.context()));
+      this.$el.html(_.template(KP.Templates.pomodoroView, this.context()));
       log = new KP.PomodoroLogsView({
         collection: KP.app.pomodoroLog,
         task: this.model

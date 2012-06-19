@@ -22,7 +22,7 @@ if (window.K2) {
     };
 
     PomodoroLogsOverviewView.prototype.render = function() {
-      this.$el.html(_.template(KP.PomodoroLogsOverviewTemplate, this.context()));
+      this.$el.html(_.template(KP.Templates.pomodoroLogsOverview, this.context()));
       return this;
     };
 

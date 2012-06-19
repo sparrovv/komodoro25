@@ -10,7 +10,7 @@ if window.K2
       interruptedAll: "to do"
 
     render: ->
-      @$el.html _.template(KP.PomodoroLogsOverviewTemplate, @context()) 
+      @$el.html _.template(KP.Templates.pomodoroLogsOverview, @context()) 
 
       this
 

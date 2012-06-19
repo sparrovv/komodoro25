@@ -12,7 +12,7 @@ if window.K2
       finished: @collection.finished(@task.id).length
 
     render: ->
-      @$el.html _.template(KP.pomodoroLogTemplate, @context()) 
+      @$el.html _.template(KP.Templates.pomodoroLogs, @context()) 
 
       c = @collection.all_for_task_id(@task.id)
       _(c).each (model) =>
@@ -37,6 +37,6 @@ if window.K2
       created_at: moment( @model.get('created_at')).format('dddd, MMMM Do YYYY, h:mm:ss a')
 
     render: ->
-      @$el.html _.template(KP.PomodoroLogEntry, @context()) 
+      @$el.html _.template(KP.Templates.pomodoroLog, @context()) 
 
       this
