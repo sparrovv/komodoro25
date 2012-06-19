@@ -2,7 +2,7 @@
 
 ## TODOS
 
-* Add 5 minute break
-* Disable sounds, keep info in cookie
+* Ensure that it doesn't break kanbanery site, try catch
+* listen for new tasks and attach pomidor
+* refactor ?
 * Overview log page
-* If there is only one digit in timer prepend 0

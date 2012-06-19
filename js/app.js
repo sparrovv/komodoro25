@@ -17,8 +17,8 @@ KP.App = (function() {
     } else {
       return KP.settings = {
         sounds: false,
-        pomodoroTime: 6000,
-        breakTime: 6000
+        pomodoroTime: 150000,
+        breakTime: 30000
       };
     }
   };

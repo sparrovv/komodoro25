@@ -21,7 +21,7 @@ if (window.K2) {
       this.breakTimer = new K2.Timer(KP.settings.breakTime);
       this.breakTimer.on('end', this.onBreakTimerEnd, this);
       this.breakTimer.on('tick', this.onBreakTimerTick, this);
-      this.pomodoroTimer = new K2.Timer(KP.settings.breakTime);
+      this.pomodoroTimer = new K2.Timer(KP.settings.pomodoroTime);
       this.pomodoroTimer.on('end', this.onPomodoroTimerEnd, this);
       this.pomodoroTimer.on('tick', this.onPomodoroTimerTick, this);
       return this.documentTitle = $(document).attr('title');

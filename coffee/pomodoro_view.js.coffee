@@ -12,7 +12,7 @@ if window.K2
       @breakTimer.on 'end', @onBreakTimerEnd, this
       @breakTimer.on 'tick', @onBreakTimerTick, this
 
-      @pomodoroTimer = new K2.Timer(KP.settings.breakTime)
+      @pomodoroTimer = new K2.Timer(KP.settings.pomodoroTime)
       @pomodoroTimer.on 'end', @onPomodoroTimerEnd, this
       @pomodoroTimer.on 'tick', @onPomodoroTimerTick, this
 

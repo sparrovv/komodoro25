@@ -13,8 +13,8 @@ class KP.App
     else
       KP.settings =
         sounds: false
-        pomodoroTime: 6000
-        breakTime: 6000
+        pomodoroTime: 150000
+        breakTime: 30000
 
   init: ->
     console.log 'KP init'
