@@ -4,17 +4,17 @@
   text-shadow: 4px 4px 5px lightGrey;
 }
 
-#pomodoro-box {
+.pomodoro-box {
   padding: 10px 5px
 }
 
-#pomodoro-box #start-pomodoro{
+.pomodoro-box #start-pomodoro{
   background: #0064CD;
   color: white;
   font-weight: normal;
 }
 
-#pomodoro-box #stop-pomodoro{
+.pomodoro-box #stop-pomodoro{
   background: #ff5656;
   color: white;
   font-weight: normal;
@@ -24,7 +24,7 @@
   text-align: center;
 }
 
-#pomodoro-log table{
+.pomodoro-box table{
   font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
   font-size: 12px;
   width: 600px;
@@ -33,7 +33,7 @@
   margin: 30px auto;
 }
 
-#pomodoro-log table th{
+.pomodoro-box table th{
   font-weight: normal;
   font-size: 14px;
   border-bottom: 2px solid #6678B1;
@@ -43,24 +43,24 @@
   padding: 8px 2px;
 }
 
-#pomodoro-log table td {
+.pomodoro-box table td {
   border-right: 30px solid white;
   border-left: 30px solid white;
   color: #669;
   padding: 12px 2px 0;
 }
 
-#pomodoro-box .commands {
+.pomodoro-box .commands {
   margin: 30px 0px;
 
   text-align: center;
 }
 
-#pomodoro-box input[type='text'] {
+.pomodoro-box input[type='text'] {
   width: 500px;
 }
 
-#pomodoro-box h2 {
+.pomodoro-box h2 {
   margin: 10px 10px 20px;
   color: #222;
   border-bottom: 1px solid #CCC;
@@ -69,8 +69,12 @@
   -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
-#pomodoro-box .break-info {
+.pomodoro-box .break-info {
   display:none;
   font-size:40px;
   text-align: center;
+}
+
+#pomodoro-logs-overview table th.first{
+  border-bottom: none;
 }

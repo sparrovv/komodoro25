@@ -1,6 +1,6 @@
 
 KP.pomodorTemplate = '\
-<div id="pomodoro-box">\
+<div id="pomodoro-box" class="pomodoro-box">\
   <h2>Pomodoro for "<%= name %>"</h2>\
 \
   <div id="countdown">\
@@ -45,12 +45,24 @@ KP.PomodoroLogEntry = '\
 ';
 
 KP.PomodoroLogsOverviewTemplate = '\
-  <h2>Pomodoro Log Overview</h2>\
+  <div id="pomodoro-logs-overview" class="pomodoro-box">\
+    <h2>Pomodoro Log Overview</h2>\
 \
-  <dl>\
-  <dt>Number of pomodors today</dt><dd><%= allToday %></dd>\
-\
-  <dt>Finished</dt><dd><%= finishedToday %></dd>\
-  <dt>Interrupted </dt><dd><%= interruptedToday %></dd>\
-  </dl>\
+    <table>\
+      <tr>\
+        <th class="first"> </th>\
+        <th> Today </th>\
+        <th> This week </th>\
+      </tr>\
+      <tr>\
+        <td>Pomodors </td><td><%= allToday %></td><td>todo</td>\
+      </tr>\
+      <tr>\
+        <td>Finished</td><td><%= finishedToday %></td><td>todo</td>\
+      </tr>\
+      <tr>\
+        <td>Interrupted </td><td><%= interruptedToday %></td><td>todo</td>\
+      </tr>\
+    </table>\
+  </div>\
 ';
