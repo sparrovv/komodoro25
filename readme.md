@@ -1,9 +1,10 @@
 # Kanbanery - time tracking with pomodoro extension
 
+LIB in progress
+
 ## TODOS
 
-* Ensure that it doesn't break kanbanery site, try catch
-* listen for new tasks and attach pomidor
-* refactor ?
-* Overview log page
-* localStorage keep all in one or by project.id ?
+* Ensure that it doesn't break kanbanery site
+* Listen for new tasks and attach pomodoro icon
+* Better overview log page
+* Keep logs per project or in one localStorage, hmm ?
