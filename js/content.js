@@ -5,7 +5,6 @@ p = new Proxy(document);
 chrome.extension.sendRequest({
   method: "getSettings"
 }, function(response) {
-  console.log(response.settings);
   return localStorage['komodoro_settings'] = response.settings;
 });
 
