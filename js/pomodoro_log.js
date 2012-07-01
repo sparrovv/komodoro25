@@ -59,15 +59,20 @@ if (window.K2) {
 
     PomodoroLogs.prototype.localStorage = new Store("komodoro_logs_" + K2.app.project.id);
 
-    PomodoroLogs.prototype.all_for_task_id = function(task_id) {
+    PomodoroLogs.prototype.finishedScope = function(l) {
+      return l.get('type') === 'finished';
+    };
+
+    PomodoroLogs.prototype.allForTaskId = function(task_id) {
       return this.filter(function(l) {
         return l.get('task_id') === task_id;
       });
     };
 
     PomodoroLogs.prototype.finished = function(task_id) {
-      return _(this.all_for_task_id(task_id)).filter(function(l) {
-        return l.get('type') === 'finished';
+      var _this = this;
+      return _(this.allForTaskId(task_id)).filter(function(l) {
+        return _this.finishedScope(l);
       });
     };
 
@@ -80,8 +85,20 @@ if (window.K2) {
     };
 
     PomodoroLogs.prototype.finishedToday = function() {
+      var _this = this;
       return this.allToday().filter(function(l) {
-        return l.get('type') === 'finished';
+        return _this.finishedScope(l);
+      });
+    };
+
+    PomodoroLogs.prototype.all = function() {
+      return this.models;
+    };
+
+    PomodoroLogs.prototype.allFinished = function() {
+      var _this = this;
+      return this.all().filter(function(l) {
+        return _this.finishedScope(l);
       });
     };
 

@@ -15,9 +15,9 @@ if (window.K2) {
         allToday: this.collection.allToday().length,
         finishedToday: this.collection.finishedToday().length,
         interruptedToday: this.collection.allToday().length - this.collection.finishedToday().length,
-        allEver: "to do",
-        finishedAll: "to do",
-        interruptedAll: "to do"
+        allEver: this.collection.all().length,
+        allFinished: this.collection.allFinished().length,
+        allInterupted: this.collection.all().length - this.collection.allFinished().length
       };
     };
 

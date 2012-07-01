@@ -8,13 +8,13 @@ if window.K2
       @collection.on 'add', @render, this
 
     context: ->
-      all: @collection.all_for_task_id(@task.id).length
+      all: @collection.allForTaskId(@task.id).length
       finished: @collection.finished(@task.id).length
 
     render: ->
       @$el.html _.template(KP.Templates.pomodoroLogs, @context()) 
 
-      c = @collection.all_for_task_id(@task.id)
+      c = @collection.allForTaskId(@task.id)
       _(c).each (model) =>
         @addLogEntry(model)
 

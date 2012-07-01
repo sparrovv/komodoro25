@@ -30,18 +30,27 @@ if window.K2
     # every project has its own storage
     localStorage: new Store("komodoro_logs_#{K2.app.project.id}")
 
-    all_for_task_id: (task_id) ->
+    finishedScope: (l) ->
+      l.get('type') == 'finished'
+
+    allForTaskId: (task_id) ->
       @filter (l) -> l.get('task_id') == task_id 
 
     finished: (task_id) ->
-      _(@all_for_task_id(task_id)).filter (l) -> l.get('type') == 'finished'
+      _(@allForTaskId(task_id)).filter (l) => @finishedScope(l)
 
     allToday: ->
       todayString = (new Date()).toDateString()
       @filter (l) -> l.createdAtDateString() == todayString
 
     finishedToday: ->
-      @allToday().filter (l) -> l.get('type') == 'finished'
+      @allToday().filter (l) => @finishedScope(l)
+
+    all: ->
+      @models
+
+    allFinished: ->
+      @all().filter (l) => @finishedScope(l)
 
     comperator: ->
       @get('created_at')

@@ -1,4 +1,5 @@
 class KP.App
+
   constructor: ->
     $(document).bind 'initial-load-finished', => @init()
 
@@ -6,6 +7,7 @@ class KP.App
     KP.app = this
 
     @loadSettings()
+    @pomodoroEl = $("<a class='pomodoro'><img src='#{KP.url}/assets/tomato.png' alt='P' style='width: 8px; height: 8px;'/></a>")
 
   loadSettings: ->
     if localStorage['komodoro_settings']
@@ -22,15 +24,6 @@ class KP.App
     @pomodoroLog = new KP.PomodoroLogs()
     @pomodoroLog.fetch()
 
-    el = $("<a class='pomodoro'><img src='#{KP.url}/assets/tomato.png' alt='P' style='width: 8px; height: 8px;'/></a>")
-    $('.task-view .task-panel').append(el)
-
-    thiz = @
-    $('.task-view .pomodoro').click (e) -> 
-      e.preventDefault()
-      thiz.onPomodorIconClicked(this)
-      false
-
     @endSound = new KP.KAudio("#{KP.url}/assets/stop.wav")
     @startSound = new KP.KAudio("#{KP.url}/assets/start.wav")
     @endBreakSound = new KP.KAudio("#{KP.url}/assets/end_of_break.wav")
@@ -38,7 +31,20 @@ class KP.App
 
     @createLogOverviewListener()
 
-  onPomodorIconClicked: (el) ->
+    @appendPomodoroEl()
+
+  appendPomodoroEl: ->
+    thiz = this
+
+    $('.task-view .task-panel').append(@pomodoroEl)
+
+    $('.task-view .pomodoro').click (e) ->
+      e.preventDefault()
+      thiz.onPomodoroElClicked(this)
+
+      false
+
+  onPomodoroElClicked: (el) ->
     taskModel = $(el).parents('.task-view').view().model
 
     pomodoroView = new KP.PomodoroView(model: taskModel)
@@ -60,6 +66,11 @@ class KP.App
       e.preventDefault()
       @onPomodorLogsOverviewClicked()
       false
+
+   #TODO:
+   onNewTaskAddedToBoard: ->
+     console.log "attach icon"
+     # I need global event for new tasks, 
 
 class KP.KAudio
   constructor: (src) ->

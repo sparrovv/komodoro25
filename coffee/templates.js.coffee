@@ -54,16 +54,16 @@ KP.Templates.pomodoroLogsOverview = '
       <tr>
         <th class="first"> </th>
         <th> Today </th>
-        <th> This week </th>
+        <th> Ever </th>
       </tr>
       <tr>
-        <td>Pomodors </td><td><%= allToday %></td><td>todo</td>
+        <td>Pomodors </td><td><%= allToday %></td><td><%= allEver %></td>
       </tr>
       <tr>
-        <td>Finished</td><td><%= finishedToday %></td><td>todo</td>
+        <td>Finished</td><td><%= finishedToday %></td><td><%= allFinished %></td>
       </tr>
       <tr>
-        <td>Interrupted </td><td><%= interruptedToday %></td><td>todo</td>
+        <td>Interrupted </td><td><%= interruptedToday %></td><td><%= allInterupted %></td>
       </tr>
     </table>
   </div>

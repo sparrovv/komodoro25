@@ -5,9 +5,9 @@ if window.K2
       allToday: @collection.allToday().length
       finishedToday: @collection.finishedToday().length
       interruptedToday: @collection.allToday().length - @collection.finishedToday().length
-      allEver: "to do"
-      finishedAll: "to do"
-      interruptedAll: "to do"
+      allEver: @collection.all().length
+      allFinished: @collection.allFinished().length
+      allInterupted: @collection.all().length - @collection.allFinished().length  
 
     render: ->
       @$el.html _.template(KP.Templates.pomodoroLogsOverview, @context()) 

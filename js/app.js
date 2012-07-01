@@ -9,6 +9,7 @@ KP.App = (function() {
     KP.url = $('#komodoro-url').val();
     KP.app = this;
     this.loadSettings();
+    this.pomodoroEl = $("<a class='pomodoro'><img src='" + KP.url + "/assets/tomato.png' alt='P' style='width: 8px; height: 8px;'/></a>");
   }
 
   App.prototype.loadSettings = function() {
@@ -24,26 +25,29 @@ KP.App = (function() {
   };
 
   App.prototype.init = function() {
-    var el, thiz;
     console.log('KP init');
     this.pomodoroLog = new KP.PomodoroLogs();
     this.pomodoroLog.fetch();
-    el = $("<a class='pomodoro'><img src='" + KP.url + "/assets/tomato.png' alt='P' style='width: 8px; height: 8px;'/></a>");
-    $('.task-view .task-panel').append(el);
-    thiz = this;
-    $('.task-view .pomodoro').click(function(e) {
-      e.preventDefault();
-      thiz.onPomodorIconClicked(this);
-      return false;
-    });
     this.endSound = new KP.KAudio("" + KP.url + "/assets/stop.wav");
     this.startSound = new KP.KAudio("" + KP.url + "/assets/start.wav");
     this.endBreakSound = new KP.KAudio("" + KP.url + "/assets/end_of_break.wav");
     this.tickSound = new KP.KAudio("" + KP.url + "/assets/tick.wav");
-    return this.createLogOverviewListener();
+    this.createLogOverviewListener();
+    return this.appendPomodoroEl();
   };
 
-  App.prototype.onPomodorIconClicked = function(el) {
+  App.prototype.appendPomodoroEl = function() {
+    var thiz;
+    thiz = this;
+    $('.task-view .task-panel').append(this.pomodoroEl);
+    return $('.task-view .pomodoro').click(function(e) {
+      e.preventDefault();
+      thiz.onPomodoroElClicked(this);
+      return false;
+    });
+  };
+
+  App.prototype.onPomodoroElClicked = function(el) {
     var pomodoroView, taskModel;
     taskModel = $(el).parents('.task-view').view().model;
     pomodoroView = new KP.PomodoroView({
@@ -72,6 +76,10 @@ KP.App = (function() {
       _this.onPomodorLogsOverviewClicked();
       return false;
     });
+  };
+
+  App.prototype.onNewTaskAddedToBoard = function() {
+    return console.log("attach icon");
   };
 
   return App;

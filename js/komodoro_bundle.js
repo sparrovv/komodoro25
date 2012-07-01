@@ -59,16 +59,16 @@ KP.Templates.pomodoroLogsOverview = '\
       <tr>\
         <th class="first"> </th>\
         <th> Today </th>\
-        <th> This week </th>\
+        <th> Ever </th>\
       </tr>\
       <tr>\
-        <td>Pomodors </td><td><%= allToday %></td><td>todo</td>\
+        <td>Pomodors </td><td><%= allToday %></td><td><%= allEver %></td>\
       </tr>\
       <tr>\
-        <td>Finished</td><td><%= finishedToday %></td><td>todo</td>\
+        <td>Finished</td><td><%= finishedToday %></td><td><%= allFinished %></td>\
       </tr>\
       <tr>\
-        <td>Interrupted </td><td><%= interruptedToday %></td><td>todo</td>\
+        <td>Interrupted </td><td><%= interruptedToday %></td><td><%= allInterupted %></td>\
       </tr>\
     </table>\
   </div>\
@@ -258,15 +258,20 @@ if (window.K2) {
 
     PomodoroLogs.prototype.localStorage = new Store("komodoro_logs_" + K2.app.project.id);
 
-    PomodoroLogs.prototype.all_for_task_id = function(task_id) {
+    PomodoroLogs.prototype.finishedScope = function(l) {
+      return l.get('type') === 'finished';
+    };
+
+    PomodoroLogs.prototype.allForTaskId = function(task_id) {
       return this.filter(function(l) {
         return l.get('task_id') === task_id;
       });
     };
 
     PomodoroLogs.prototype.finished = function(task_id) {
-      return _(this.all_for_task_id(task_id)).filter(function(l) {
-        return l.get('type') === 'finished';
+      var _this = this;
+      return _(this.allForTaskId(task_id)).filter(function(l) {
+        return _this.finishedScope(l);
       });
     };
 
@@ -279,8 +284,20 @@ if (window.K2) {
     };
 
     PomodoroLogs.prototype.finishedToday = function() {
+      var _this = this;
       return this.allToday().filter(function(l) {
-        return l.get('type') === 'finished';
+        return _this.finishedScope(l);
+      });
+    };
+
+    PomodoroLogs.prototype.all = function() {
+      return this.models;
+    };
+
+    PomodoroLogs.prototype.allFinished = function() {
+      var _this = this;
+      return this.all().filter(function(l) {
+        return _this.finishedScope(l);
       });
     };
 
@@ -336,7 +353,7 @@ if (window.K2) {
 
     PomodoroLogsView.prototype.context = function() {
       return {
-        all: this.collection.all_for_task_id(this.task.id).length,
+        all: this.collection.allForTaskId(this.task.id).length,
         finished: this.collection.finished(this.task.id).length
       };
     };
@@ -345,7 +362,7 @@ if (window.K2) {
       var c,
         _this = this;
       this.$el.html(_.template(KP.Templates.pomodoroLogs, this.context()));
-      c = this.collection.all_for_task_id(this.task.id);
+      c = this.collection.allForTaskId(this.task.id);
       _(c).each(function(model) {
         return _this.addLogEntry(model);
       });
@@ -409,9 +426,9 @@ if (window.K2) {
         allToday: this.collection.allToday().length,
         finishedToday: this.collection.finishedToday().length,
         interruptedToday: this.collection.allToday().length - this.collection.finishedToday().length,
-        allEver: "to do",
-        finishedAll: "to do",
-        interruptedAll: "to do"
+        allEver: this.collection.all().length,
+        allFinished: this.collection.allFinished().length,
+        allInterupted: this.collection.all().length - this.collection.allFinished().length
       };
     };
 
@@ -590,6 +607,7 @@ KP.App = (function() {
     KP.url = $('#komodoro-url').val();
     KP.app = this;
     this.loadSettings();
+    this.pomodoroEl = $("<a class='pomodoro'><img src='" + KP.url + "/assets/tomato.png' alt='P' style='width: 8px; height: 8px;'/></a>");
   }
 
   App.prototype.loadSettings = function() {
@@ -605,26 +623,29 @@ KP.App = (function() {
   };
 
   App.prototype.init = function() {
-    var el, thiz;
     console.log('KP init');
     this.pomodoroLog = new KP.PomodoroLogs();
     this.pomodoroLog.fetch();
-    el = $("<a class='pomodoro'><img src='" + KP.url + "/assets/tomato.png' alt='P' style='width: 8px; height: 8px;'/></a>");
-    $('.task-view .task-panel').append(el);
-    thiz = this;
-    $('.task-view .pomodoro').click(function(e) {
-      e.preventDefault();
-      thiz.onPomodorIconClicked(this);
-      return false;
-    });
     this.endSound = new KP.KAudio("" + KP.url + "/assets/stop.wav");
     this.startSound = new KP.KAudio("" + KP.url + "/assets/start.wav");
     this.endBreakSound = new KP.KAudio("" + KP.url + "/assets/end_of_break.wav");
     this.tickSound = new KP.KAudio("" + KP.url + "/assets/tick.wav");
-    return this.createLogOverviewListener();
+    this.createLogOverviewListener();
+    return this.appendPomodoroEl();
   };
 
-  App.prototype.onPomodorIconClicked = function(el) {
+  App.prototype.appendPomodoroEl = function() {
+    var thiz;
+    thiz = this;
+    $('.task-view .task-panel').append(this.pomodoroEl);
+    return $('.task-view .pomodoro').click(function(e) {
+      e.preventDefault();
+      thiz.onPomodoroElClicked(this);
+      return false;
+    });
+  };
+
+  App.prototype.onPomodoroElClicked = function(el) {
     var pomodoroView, taskModel;
     taskModel = $(el).parents('.task-view').view().model;
     pomodoroView = new KP.PomodoroView({
@@ -653,6 +674,10 @@ KP.App = (function() {
       _this.onPomodorLogsOverviewClicked();
       return false;
     });
+  };
+
+  App.prototype.onNewTaskAddedToBoard = function() {
+    return console.log("attach icon");
   };
 
   return App;

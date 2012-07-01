@@ -18,7 +18,7 @@ if (window.K2) {
 
     PomodoroLogsView.prototype.context = function() {
       return {
-        all: this.collection.all_for_task_id(this.task.id).length,
+        all: this.collection.allForTaskId(this.task.id).length,
         finished: this.collection.finished(this.task.id).length
       };
     };
@@ -27,7 +27,7 @@ if (window.K2) {
       var c,
         _this = this;
       this.$el.html(_.template(KP.Templates.pomodoroLogs, this.context()));
-      c = this.collection.all_for_task_id(this.task.id);
+      c = this.collection.allForTaskId(this.task.id);
       _(c).each(function(model) {
         return _this.addLogEntry(model);
       });
