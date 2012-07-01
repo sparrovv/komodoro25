@@ -32,6 +32,7 @@ if (window.K2) {
       time = this.pomodoroTimer.initialTime();
       return {
         name: this.model.get('title'),
+        description: this.model.get('description'),
         minutes: time[0],
         seconds: time[1]
       };

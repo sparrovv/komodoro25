@@ -3,6 +3,7 @@ KP.Templates = {}
 KP.Templates.pomodoroView = '
 <div id="pomodoro-box" class="pomodoro-box">
   <h2>Pomodoro for "<%= name %>"</h2>
+  <p><%= description %></p>
 
   <div id="countdown">
     <span class="minutes"><%= minutes %></span> : <span class="seconds"><%= seconds %></span>

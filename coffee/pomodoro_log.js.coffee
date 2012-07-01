@@ -28,7 +28,7 @@ if window.K2
     model: KP.PomodoroLog
 
     # every project has its own storage
-    localStorage: new Store("komodoro_logs_#{K2.project.id}")
+    localStorage: new Store("komodoro_logs_#{K2.app.project.id}")
 
     all_for_task_id: (task_id) ->
       @filter (l) -> l.get('task_id') == task_id 

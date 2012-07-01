@@ -22,6 +22,7 @@ if window.K2
       time = @pomodoroTimer.initialTime()
 
       name: @model.get('title')
+      description: @model.get('description')
       minutes: time[0]
       seconds: time[1]
 

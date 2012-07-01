@@ -8,22 +8,14 @@
 
   "content_scripts": [{
     "matches": [
-      "https://*.kanbanery.com/projects/*/board",
-      "http://*.kanbanery.llpdemo.com/projects/*/board",
-      "http://*.k.dev/projects/*/board"
+      "https://*.kanbanery.com/projects/*/board/",
+      "http://*.kanbanery.llpdemo.com/projects/*/board/",
+      "http://*.k.dev/projects/*/board/"
     ],
 
     "js": [
       "js/proxy.js",
-      "js/init.js",
-      "js/local_storage.js",
-      "js/pomodoro_log.js",
-      "js/pomodoro_log_view.js",
-      "js/pomodoro_logs_overview_view.js",
-      "js/templates.js",
-      "js/timer.js",
-      "js/pomodoro_view.js",
-      "js/app.js",
+      "js/komodoro_bundle.js",
       "js/content.js"
     ],
 

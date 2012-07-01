@@ -57,7 +57,7 @@ if (window.K2) {
 
     PomodoroLogs.prototype.model = KP.PomodoroLog;
 
-    PomodoroLogs.prototype.localStorage = new Store("komodoro_logs_" + K2.project.id);
+    PomodoroLogs.prototype.localStorage = new Store("komodoro_logs_" + K2.app.project.id);
 
     PomodoroLogs.prototype.all_for_task_id = function(task_id) {
       return this.filter(function(l) {
