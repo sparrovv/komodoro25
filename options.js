@@ -1,20 +1,17 @@
-var defaultSounds = false;
-var defaultPomodoroTime = 1500000;
-var defaultBreakTime = 15000;
-
 function loadOptions() {
 	var options = localStorage.getItem('settings');
   var settings = {};
 
   if(options){
     settings = JSON.parse(options);
+  }else{
+    settings.breakTime = 30000;
+    settings.pomodoroTime = 1500000;
+    settings.sounds = true;
   }
 
-  console.log(settings);
-
-  document.getElementById('break-time').value = settings.breakTime || defaultBreakTime;
-  document.getElementById('pomodoro-time').value = settings.pomodoroTime || defaultPomodoroTime;
-
+  document.getElementById('break-time').value = settings.breakTime;
+  document.getElementById('pomodoro-time').value = settings.pomodoroTime;
   document.getElementById('sounds').checked = settings.sounds;
 }
 
@@ -24,7 +21,7 @@ function saveOptions() {
   options.breakTime = document.getElementById('break-time').value;
   options.pomodoroTime = document.getElementById('pomodoro-time').value;
 
-	localStorage["settings"] = JSON.stringify(options);
+  localStorage["settings"] = JSON.stringify(options);
 
 }
 
