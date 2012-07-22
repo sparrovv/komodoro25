@@ -9,7 +9,8 @@
   "content_scripts": [{
     "matches": [
       "https://*.kanbanery.com/projects/*/board/",
-      "http://*.kanbanery.llpdemo.com/projects/*/board/",
+      "https://*.kanbanery.llpdemo.com/*/board/",
+      "http://*.kanbanery.llpdemo.com/*/board/",
       "http://*.k.dev/projects/*/board/"
     ],
 
