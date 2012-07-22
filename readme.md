@@ -7,3 +7,4 @@ LIB in progress
 * Listen for new tasks and attach pomodoro icon
 * Better overview log page
 * Keep logs per project or in one localStorage, hmm ?
+* Don't allow to click on abort more than 1

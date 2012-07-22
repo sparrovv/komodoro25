@@ -1,4 +1,5 @@
-var __hasProp = {}.hasOwnProperty,
+var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 if (window.K2) {
@@ -7,24 +8,29 @@ if (window.K2) {
     __extends(PomodoroView, _super);
 
     function PomodoroView() {
+      this.showInitialPomodoroTimer = __bind(this.showInitialPomodoroTimer, this);
+
+      this.onPomodoroTimerStop = __bind(this.onPomodoroTimerStop, this);
+
+      this.onBreakTimerEnd = __bind(this.onBreakTimerEnd, this);
       return PomodoroView.__super__.constructor.apply(this, arguments);
     }
 
     PomodoroView.prototype.events = {
       'click #start-pomodoro': 'onPomodoroStart',
-      'click #stop-pomodoro': 'onPomodoroStop',
+      'click #stop-pomodoro': 'onAbortedClicked',
       'keydown input': 'onKeyDown'
     };
 
     PomodoroView.prototype.initialize = function() {
       PomodoroView.__super__.initialize.call(this, arguments);
       this.breakTimer = new K2.Timer(parseInt(KP.settings.breakTime, 10));
-      this.breakTimer.on('end', this.onBreakTimerEnd, this);
+      this.breakTimer.on('end', this.onBreakTimerEnd);
       this.breakTimer.on('tick', this.onBreakTimerTick, this);
       this.pomodoroTimer = new K2.Timer(parseInt(KP.settings.pomodoroTime, 10));
       this.pomodoroTimer.on('end', this.onPomodoroTimerEnd, this);
       this.pomodoroTimer.on('tick', this.onPomodoroTimerTick, this);
-      this.pomodoroTimer.on('stop', this.onPomodoroTimerStop, this);
+      this.pomodoroTimer.on('stop', this.onPomodoroTimerStop);
       return this.documentTitle = $(document).attr('title');
     };
 
@@ -71,7 +77,8 @@ if (window.K2) {
       this.breakTimer.stop();
       $(document).attr('title', this.documentTitle);
       this.$('.break-info').hide();
-      return this.$('.commands').show();
+      this.$('.commands').show();
+      return setTimeout(this.showInitialPomodoroTimer, 10);
     };
 
     PomodoroView.prototype.onPomodoroTimerTick = function() {
@@ -81,9 +88,7 @@ if (window.K2) {
     };
 
     PomodoroView.prototype.onPomodoroTimerStop = function() {
-      var time;
-      time = this.pomodoroTimer.initialTime();
-      return this.renderTimer(time[0], time[1]);
+      return this.showInitialPomodoroTimer();
     };
 
     PomodoroView.prototype.onPomodoroTimerEnd = function() {
@@ -113,6 +118,18 @@ if (window.K2) {
       return false;
     };
 
+    PomodoroView.prototype.isTimerStopOrUnset = function() {
+      return !this.pomodoroTimer.intervalId || !this.pomodoroTimer.startTime;
+    };
+
+    PomodoroView.prototype.onAbortedClicked = function(e) {
+      if (this.isTimerStopOrUnset()) {
+        return false;
+      }
+      this.onPomodoroStop(e);
+      return false;
+    };
+
     PomodoroView.prototype.onPomodoroStop = function(e) {
       var log;
       log = new KP.PomodoroLog({
@@ -124,8 +141,7 @@ if (window.K2) {
       KP.app.pomodoroLog.add(log);
       log.save();
       $(document).attr('title', this.documentTitle);
-      this.pomodoroTimer.stop();
-      return false;
+      return this.pomodoroTimer.stop();
     };
 
     PomodoroView.prototype.onKeyDown = function(e) {
@@ -135,6 +151,12 @@ if (window.K2) {
       } else {
         return true;
       }
+    };
+
+    PomodoroView.prototype.showInitialPomodoroTimer = function() {
+      var time;
+      time = this.pomodoroTimer.initialTime();
+      return this.renderTimer(time[0], time[1]);
     };
 
     PomodoroView.prototype.destroy = function() {

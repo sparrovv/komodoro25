@@ -2,20 +2,20 @@ if window.K2
   class KP.PomodoroView extends window.Backbone.View
     events:
       'click #start-pomodoro': 'onPomodoroStart'
-      'click #stop-pomodoro': 'onPomodoroStop'
+      'click #stop-pomodoro': 'onAbortedClicked'
       'keydown input': 'onKeyDown'
 
     initialize: ->
       super arguments
 
       @breakTimer = new K2.Timer(parseInt(KP.settings.breakTime, 10))
-      @breakTimer.on 'end', @onBreakTimerEnd, this
+      @breakTimer.on 'end', @onBreakTimerEnd
       @breakTimer.on 'tick', @onBreakTimerTick, this
 
       @pomodoroTimer = new K2.Timer(parseInt(KP.settings.pomodoroTime, 10))
       @pomodoroTimer.on 'end', @onPomodoroTimerEnd, this
       @pomodoroTimer.on 'tick', @onPomodoroTimerTick, this
-      @pomodoroTimer.on 'stop', @onPomodoroTimerStop, this
+      @pomodoroTimer.on 'stop', @onPomodoroTimerStop
 
       @documentTitle = $(document).attr('title')
 
@@ -50,7 +50,7 @@ if window.K2
       time = @breakTimer.currentTime()
       @renderTimer(time[0], time[1])
 
-    onBreakTimerEnd: ->
+    onBreakTimerEnd: =>
       KP.app.endSound.play()
 
       @breakTimer.stop()
@@ -58,6 +58,7 @@ if window.K2
 
       @$('.break-info').hide()
       @$('.commands').show()
+      setTimeout @showInitialPomodoroTimer, 10
 
     onPomodoroTimerTick: ->
       #KP.app.tickSound.play()
@@ -65,9 +66,8 @@ if window.K2
       time = @pomodoroTimer.currentTime()
       @renderTimer(time[0], time[1])
 
-    onPomodoroTimerStop: ->
-      time = @pomodoroTimer.initialTime()
-      @renderTimer(time[0], time[1])
+    onPomodoroTimerStop: =>
+      @showInitialPomodoroTimer()
 
     onPomodoroTimerEnd: ->
       KP.app.endSound.play()
@@ -95,6 +95,16 @@ if window.K2
 
       false
 
+    isTimerStopOrUnset: ->
+      not @pomodoroTimer.intervalId ||
+        not @pomodoroTimer.startTime
+
+    onAbortedClicked: (e) ->
+      return false if @isTimerStopOrUnset()
+      @onPomodoroStop(e)
+
+      false
+
     onPomodoroStop: (e) ->
       log = new KP.PomodoroLog
         name: @model.get('title')
@@ -108,14 +118,16 @@ if window.K2
       $(document).attr('title', @documentTitle)
       @pomodoroTimer.stop()
 
-      false
-
     onKeyDown: (e) ->
       if e.keyCode == 13
         @onPomodoroStart()
         false
       else
         true
+
+    showInitialPomodoroTimer: =>
+      time = @pomodoroTimer.initialTime()
+      @renderTimer(time[0], time[1])
 
     destroy: ->
       @pomodoroTimer.stop()
