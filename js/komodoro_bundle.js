@@ -1,4 +1,3 @@
-try {
 var KP;
 
 KP = {};
@@ -474,6 +473,7 @@ if (window.K2) {
       this.pomodoroTimer = new K2.Timer(parseInt(KP.settings.pomodoroTime, 10));
       this.pomodoroTimer.on('end', this.onPomodoroTimerEnd, this);
       this.pomodoroTimer.on('tick', this.onPomodoroTimerTick, this);
+      this.pomodoroTimer.on('stop', this.onPomodoroTimerStop, this);
       return this.documentTitle = $(document).attr('title');
     };
 
@@ -526,6 +526,12 @@ if (window.K2) {
     PomodoroView.prototype.onPomodoroTimerTick = function() {
       var time;
       time = this.pomodoroTimer.currentTime();
+      return this.renderTimer(time[0], time[1]);
+    };
+
+    PomodoroView.prototype.onPomodoroTimerStop = function() {
+      var time;
+      time = this.pomodoroTimer.initialTime();
       return this.renderTimer(time[0], time[1]);
     };
 
@@ -611,12 +617,12 @@ KP.App = (function() {
   }
 
   App.prototype.loadSettings = function() {
-    if (localStorage['komodoro_settings']) {
+    if (localStorage['komodoro_settings'] && localStorage['komodoro_settings'] !== 'undefined') {
       return KP.settings = JSON.parse(localStorage['komodoro_settings']);
     } else {
       return KP.settings = {
-        sounds: false,
-        pomodoroTime: 150000,
+        sounds: true,
+        pomodoroTime: 1500000,
         breakTime: 30000
       };
     }
@@ -707,4 +713,3 @@ KP.KAudio = (function() {
 if (window.K2) {
   new KP.App();
 }
-} catch(e) { console.log(e); }

@@ -13,12 +13,12 @@ KP.App = (function() {
   }
 
   App.prototype.loadSettings = function() {
-    if (localStorage['komodoro_settings']) {
+    if (localStorage['komodoro_settings'] && localStorage['komodoro_settings'] !== 'undefined') {
       return KP.settings = JSON.parse(localStorage['komodoro_settings']);
     } else {
       return KP.settings = {
-        sounds: false,
-        pomodoroTime: 150000,
+        sounds: true,
+        pomodoroTime: 1500000,
         breakTime: 30000
       };
     }

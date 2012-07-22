@@ -24,6 +24,7 @@ if (window.K2) {
       this.pomodoroTimer = new K2.Timer(parseInt(KP.settings.pomodoroTime, 10));
       this.pomodoroTimer.on('end', this.onPomodoroTimerEnd, this);
       this.pomodoroTimer.on('tick', this.onPomodoroTimerTick, this);
+      this.pomodoroTimer.on('stop', this.onPomodoroTimerStop, this);
       return this.documentTitle = $(document).attr('title');
     };
 
@@ -76,6 +77,12 @@ if (window.K2) {
     PomodoroView.prototype.onPomodoroTimerTick = function() {
       var time;
       time = this.pomodoroTimer.currentTime();
+      return this.renderTimer(time[0], time[1]);
+    };
+
+    PomodoroView.prototype.onPomodoroTimerStop = function() {
+      var time;
+      time = this.pomodoroTimer.initialTime();
       return this.renderTimer(time[0], time[1]);
     };
 

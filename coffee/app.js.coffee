@@ -10,12 +10,12 @@ class KP.App
     @pomodoroEl = $("<a class='pomodoro'><img src='#{KP.url}/assets/tomato.png' alt='P' style='width: 8px; height: 8px;'/></a>")
 
   loadSettings: ->
-    if localStorage['komodoro_settings']
+    if  localStorage['komodoro_settings'] && localStorage['komodoro_settings'] != 'undefined'
       KP.settings = JSON.parse(localStorage['komodoro_settings'])
     else
       KP.settings =
-        sounds: false
-        pomodoroTime: 150000
+        sounds: true
+        pomodoroTime: 1500000
         breakTime: 30000
 
   init: ->

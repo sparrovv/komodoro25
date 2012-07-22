@@ -15,6 +15,7 @@ if window.K2
       @pomodoroTimer = new K2.Timer(parseInt(KP.settings.pomodoroTime, 10))
       @pomodoroTimer.on 'end', @onPomodoroTimerEnd, this
       @pomodoroTimer.on 'tick', @onPomodoroTimerTick, this
+      @pomodoroTimer.on 'stop', @onPomodoroTimerStop, this
 
       @documentTitle = $(document).attr('title')
 
@@ -62,6 +63,10 @@ if window.K2
       #KP.app.tickSound.play()
 
       time = @pomodoroTimer.currentTime()
+      @renderTimer(time[0], time[1])
+
+    onPomodoroTimerStop: ->
+      time = @pomodoroTimer.initialTime()
       @renderTimer(time[0], time[1])
 
     onPomodoroTimerEnd: ->
