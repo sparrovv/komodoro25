@@ -5,6 +5,8 @@ LIB in progress
 ## TODOS
 
 * Listen for new tasks and attach pomodoro icon
+  * This is tricky, not sure how to accomplish that
 * Better overview log page
-* Keep logs per project or in one localStorage, hmm ?
-* Don't allow to click on abort more than 1
+  * Add real times
+* What is better: 
+  Keeping logs per project or in one localStorage, hmm ?
