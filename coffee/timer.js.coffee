@@ -1,5 +1,5 @@
 if window.K2
-  class K2.Timer
+  class KP.Timer
     constructor: (timer=1500000)->
       _.extend this, Backbone.Events
 

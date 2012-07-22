@@ -1,7 +1,7 @@
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 if (window.K2) {
-  K2.Timer = (function() {
+  KP.Timer = (function() {
 
     function Timer(timer) {
       if (timer == null) {

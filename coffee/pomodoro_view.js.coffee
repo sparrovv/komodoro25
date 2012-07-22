@@ -8,11 +8,11 @@ if window.K2
     initialize: ->
       super arguments
 
-      @breakTimer = new K2.Timer(parseInt(KP.settings.breakTime, 10))
+      @breakTimer = new KP.Timer(parseInt(KP.settings.breakTime, 10))
       @breakTimer.on 'end', @onBreakTimerEnd
       @breakTimer.on 'tick', @onBreakTimerTick, this
 
-      @pomodoroTimer = new K2.Timer(parseInt(KP.settings.pomodoroTime, 10))
+      @pomodoroTimer = new KP.Timer(parseInt(KP.settings.pomodoroTime, 10))
       @pomodoroTimer.on 'end', @onPomodoroTimerEnd, this
       @pomodoroTimer.on 'tick', @onPomodoroTimerTick, this
       @pomodoroTimer.on 'stop', @onPomodoroTimerStop

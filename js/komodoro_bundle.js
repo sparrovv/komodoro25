@@ -130,7 +130,7 @@ if (window.K2) {
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 if (window.K2) {
-  K2.Timer = (function() {
+  KP.Timer = (function() {
 
     function Timer(timer) {
       if (timer == null) {
@@ -473,10 +473,10 @@ if (window.K2) {
 
     PomodoroView.prototype.initialize = function() {
       PomodoroView.__super__.initialize.call(this, arguments);
-      this.breakTimer = new K2.Timer(parseInt(KP.settings.breakTime, 10));
+      this.breakTimer = new KP.Timer(parseInt(KP.settings.breakTime, 10));
       this.breakTimer.on('end', this.onBreakTimerEnd);
       this.breakTimer.on('tick', this.onBreakTimerTick, this);
-      this.pomodoroTimer = new K2.Timer(parseInt(KP.settings.pomodoroTime, 10));
+      this.pomodoroTimer = new KP.Timer(parseInt(KP.settings.pomodoroTime, 10));
       this.pomodoroTimer.on('end', this.onPomodoroTimerEnd, this);
       this.pomodoroTimer.on('tick', this.onPomodoroTimerTick, this);
       this.pomodoroTimer.on('stop', this.onPomodoroTimerStop);
